@@ -14,7 +14,6 @@ const Index = ({
     const [search, setSearch] = useState(q);
     const [pokemon, setPokemon] = useState<PokeList[]>(initialPokemon);
 
-    console.log(pokemon);
     useEffect(() => {
         fetch(`http://localhost:3333/pokemon?q=${search}`)
             .then((res) => res.json())
@@ -34,25 +33,28 @@ const Index = ({
         <div className={styles.container}>
             <input value={search} onChange={onSetSearch} />
             <ul>
-                {pokemon.map(({ url, name, types, sprites, id }) => {
+                {pokemon.map(({ url, name, types, sprite, abilities, id }) => {
                     return (
-                        <li key={url}>
+                        <li key={id}>
                             <Link href={`/pokemon/${id}`}>
                                 <div>
-                                    <h2>{name}</h2>
-                                    <Image
-                                        src={sprites.other.home.front_default}
+                                    <h2>{name.toLocaleUpperCase()}</h2>
+                                    <img
+                                        src={sprite}
                                         alt={name}
-                                        width={100}
-                                        height={100}
+                                        width={200}
+                                        height={200}
                                     />
                                     <ul>
-                                        {types.map(({ type }) => {
-                                            return (
-                                                <li key={type.name}>
-                                                    {type.name}
-                                                </li>
-                                            );
+                                        Type:{" "}
+                                        {types.map((type) => {
+                                            return <li key={url}>{type}</li>;
+                                        })}
+                                    </ul>
+                                    <ul>
+                                        Abilities:{" "}
+                                        {abilities.map((ability) => {
+                                            return <li key={url}>{ability}</li>;
                                         })}
                                     </ul>
                                 </div>
@@ -69,7 +71,7 @@ export async function getServerSideProps(context: any) {
     let pokemon = [];
     if (context.query.q) {
         const res = await fetch(
-            `http://localhost:3333/pokemon?q=${context.query.q}`
+            `http://localhost:3333/pokemon?q=${context.query.q}&limit=12`
         );
         pokemon = await res.json();
     }
