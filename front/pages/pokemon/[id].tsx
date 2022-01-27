@@ -3,7 +3,6 @@ import Image from "next/image";
 
 const getPokemon = async (id: any, name: any) => {
     const { data } = await axios.get(`http://localhost:3333/pokemon/${id}`);
-    console.log(data);
     return data;
 };
 
