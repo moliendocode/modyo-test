@@ -25,7 +25,6 @@ export const apiCalls = async ({
 
 export const getList = async (req: Request, res: Response) => {
     let inCache: any = await redis.get(`pokemon:list`);
-
     try {
         if (inCache) {
             const page = req.query.page || 1;
@@ -67,7 +66,7 @@ export const getList = async (req: Request, res: Response) => {
             const checkTotal = await axios.get(
                 "https://pokeapi.co/api/v2/pokemon?limit=1"
             );
-            const total = checkTotal.data.count - 500;
+            const total = checkTotal.data.count;
             let pokemonList = await apiCalls({ limit: total });
 
             await pokemonList?.data.results.forEach((value: any) => {
