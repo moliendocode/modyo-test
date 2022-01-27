@@ -1,3 +1,4 @@
+import "dotenv/config";
 import axios from "axios";
 import { Request, Response } from "express";
 import { Pokemon, PokemonList } from "../models/pokemon";
@@ -72,7 +73,7 @@ export const getList = async (req: Request, res: Response) => {
             await pokemonList?.data.results.forEach((value: any) => {
                 value.url = value.url.replace(
                     "https://pokeapi.co/api/v2/pokemon",
-                    "http://localhost:3333/pokemon"
+                    `${process.env.LOCAL_URL}/pokemon`
                 );
             });
 
